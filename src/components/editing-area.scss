@@ -1,0 +1,16 @@
+.button {
+  background: linear-gradient(#25FF96, #21EC8A);
+  border: 1px solid #A9FFD6;
+  border-radius: 3px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  letter-spacing: 1px;
+  transform: scale(1);
+  padding: 8px 16px;
+  transition: 0.1s ease transform;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
