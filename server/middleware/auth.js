@@ -1,19 +1,22 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/users')
 
-const checkToken = (req, res, next) => {
-  let token = req.headers["x-access-token"]
+const auth = async (req, res, next) => {
+  console.log(req)
+  const token = req.headers['authorization'].replace('Bearer ', '')
+  const data = jwt.verify(token, process.env.JWT_KEY)
 
-  if (!token) {
-    console.error('No tokeen')
-  }
-
-  jwt.verify(token, 'mysecretstring', (err, decoded) => {
-    if (err) {
-      console.error(err)
+  try {
+    const user = await User.findOne({ _id: data._id, 'tokens.token': token})
+    if (!user) {
+      console.error('No user')
     }
-
-    req.userId = decoded.id
+    req.user = user
+    req.token = token
     next()
-  })
+  } catch (err) {
+    console.error(err)
+  }
 }
+
+module.exports = auth

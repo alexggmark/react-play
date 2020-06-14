@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema({
   }]
 })
 
-userSchema.pre('save', async function(next) {
-  console.log(this)
+userSchema.pre('save', async function (next) {
   if (this.isModified('userPassword')) {
     this.userPassword = await bcrypt.hash(this.userPassword, 8)
   }
+
   next()
 })
 
@@ -36,7 +36,7 @@ userSchema.methods.generateAuthToken = async function () {
   return token
 }
 
-userSchema.statics.findByCredentials = async function(userName, password) {
+userSchema.statics.findByCredentials = async function (userName, password) {
   const user = await this.findOne({ userName })
 
   if (!user) {

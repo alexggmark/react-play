@@ -1,25 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const users = require('../models/users')
+const auth = require('../middleware/auth')
 
-router.get('/usersGet', async (req, res) => {
+router.get('/usersGet', auth, async (req, res) => {
   try {
-    const result = await users.find().exec()
-    res.send(result)
+    // const result = await users.find().exec()
+    res.send(req.user)
   } catch (err) {
     console.error(err)
   }
 })
-
-// router.post('/usersPost', async (req, res) => {
-//   try {
-//     const user = new users(req.body)
-//     const result = await user.save()
-//     res.send(result)
-//   } catch (err) {
-//     console.error(err)
-//   }
-// })
 
 router.post('/createUser', async (req, res) => {
   try {
