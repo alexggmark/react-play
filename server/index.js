@@ -12,11 +12,7 @@ const notesRoutes = require('./routes/notes')
 
 const app = express()
 
-const corsOptions = {
-  origin: 'https://localhost:3000'
-}
-
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
