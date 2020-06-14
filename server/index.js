@@ -2,19 +2,36 @@ const express = require('express')
 const fs = require('fs')
 const https = require('https')
 const path = require('path')
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+require('dotenv').config()
+
+const userRoutes = require('./routes/users')
+const notesRoutes = require('./routes/notes')
+
+const noteSchema = require('./models/notes')
+const userSchema = require('./models/users')
 
 const app = express()
 
-const Routes = require('./routes')
-app.use('/', Routes)
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+mongoose.connect(process.env.MONGO_TOKEN, { useNewUrlParser: true })
+  .then(() => {
+    console.log('Success')
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+
+
+app.use('/', userRoutes)
+app.use('/', notesRoutes)
 
 const options = {
   key: fs.readFileSync(path.resolve(__dirname, './certs/server.key')),
   cert: fs.readFileSync(path.resolve(__dirname, './certs/server.cert'))
 }
-
-// app.get('/', (req, res) => {
-//   res.send('Hi there')
-// })
 
 https.createServer(options, app).listen(3000)
