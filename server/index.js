@@ -4,6 +4,7 @@ const https = require('https')
 const path = require('path')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 require('dotenv').config()
 
 const userRoutes = require('./routes/users')
@@ -11,10 +12,16 @@ const notesRoutes = require('./routes/notes')
 
 const app = express()
 
+const corsOptions = {
+  origin: 'https://localhost:3000'
+}
+
+app.use(cors(corsOptions))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-mongoose.connect(process.env.MONGO_TOKEN, { useNewUrlParser: true })
+mongoose.connect(process.env.MONGO_TOKEN, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Success')
   })
