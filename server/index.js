@@ -9,9 +9,6 @@ require('dotenv').config()
 const userRoutes = require('./routes/users')
 const notesRoutes = require('./routes/notes')
 
-const noteSchema = require('./models/notes')
-const userSchema = require('./models/users')
-
 const app = express()
 
 app.use(bodyParser.json())
