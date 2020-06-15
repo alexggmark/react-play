@@ -6,21 +6,34 @@ import {
 } from '../constants/actions'
 import storageSetGet from '../utils/storageSetGet'
 
+const storage = new storageSetGet()
+
 class Login extends React.Component {
   constructor() {
     super()
     this.state = {
       userName: '',
-      userPassword: '',
-      localStorage: new storageSetGet()
+      userPassword: ''
     }
   }
 
-  componentDidMount () {
-    console.log(this.state.localStorage.get())
+  async getLoggedInUser () {
+    console.log(storage.get())
+    try {
+      const response = await axios.get('https://localhost:3000/usersGet', {
+        headers: {
+          'authorization': storage.get(),
+          'Accept' : 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      console.log(response)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  handleInputChange = (event, input) => {
+  handleInputChange (event, input) {
     switch (input) {
       case 'name':
         this.setState({ userName: event.target.value })
@@ -45,14 +58,10 @@ class Login extends React.Component {
         payload: res.data.token
       })
 
-      this.state.localStorage.set(res.data.token)
+      storage.set(res.data.token)
     } catch (err) {
       console.error(err)
     }
-  }
-
-  setStoreAuth () {
-
   }
 
   render () {
@@ -69,13 +78,14 @@ class Login extends React.Component {
           type="text"
         />
         <button onClick={() => this.loginApi()}>Login</button>
-        {this.props.userAuth ? (
+        {this.props.userAuth || storage.get() ? (
           <div>User logged in: {this.props.userAuth}</div>
         ) : <div>User NOT logged in!</div>}
-        {this.state.localStorage.get() ?
-          'Local storage ' + this.state.localStorage.get() :
+        {storage.get() ?
+          'Local storage ' + storage.get() :
           'No local storage'
         }
+        <button onClick={() => this.getLoggedInUser()}>Console user</button>
       </div>
     )
   }

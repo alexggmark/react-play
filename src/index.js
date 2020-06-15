@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from './store'
-import Login from './components/login'
-import Notes from './components/notes'
+import Login from './components/Login'
+import Notes from './components/Notes'
 
 class App extends React.Component {
   render () {

@@ -1,10 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const Notes = require('../models/notes')
+const auth = require('../middleware/auth')
 
 router.get('/notesGet', async (req, res) => {
   try {
     const result = await Notes.find().exec()
+    res.send(result)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.get('/notesGetUser/:id', auth, async (req, res) => {
+  try {
+    const result = await Notes.find({ userString: req.params.id }).exec()
     res.send(result)
   } catch (err) {
     console.error(err)

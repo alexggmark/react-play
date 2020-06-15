@@ -10,13 +10,25 @@ class Notes extends React.Component {
       title: '',
       content: '',
       currentPosts: [],
-      userAuth: props.userAuth || new storageSetGet().get()
+      userAuth: new storageSetGet().get() || props.userAuth
     }
   }
 
   async componentDidMount () {
     try {
-      const response = await axios.get('https://localhost:3000/notesGet')
+      let response;
+      if (this.state.userAuth) {
+        console.log(this.state.userAuth)
+        response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth}`, {
+          headers: {
+            'authorization': this.state.userAuth,
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+      } else {
+        response = await axios.get('https://localhost:3000/notesGet')
+      }
       this.setState({ currentPosts: response.data })
     } catch (err) {
       console.error(err)

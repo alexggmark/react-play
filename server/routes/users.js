@@ -5,8 +5,9 @@ const auth = require('../middleware/auth')
 
 router.get('/usersGet', auth, async (req, res) => {
   try {
-    // const result = await users.find().exec()
-    res.send(req.user)
+    const result = await req.user
+    res.send(result)
+    console.log(req.user)
   } catch (err) {
     console.error(err)
   }
