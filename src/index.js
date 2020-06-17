@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from './store'
 import Login from './components/Login'
+import Register from './components/Register'
 import Notes from './components/Notes'
 
 class App extends React.Component {
@@ -10,6 +11,7 @@ class App extends React.Component {
     return (
       <>
         <Login />
+        <Register />
         <Notes />
       </>
     )

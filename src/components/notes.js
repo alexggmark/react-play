@@ -3,6 +3,8 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import storageSetGet from '../utils/storageSetGet'
 
+const storage = new storageSetGet()
+
 class Notes extends React.Component {
   constructor (props) {
     super (props)
@@ -10,7 +12,7 @@ class Notes extends React.Component {
       title: '',
       content: '',
       currentPosts: [],
-      userAuth: new storageSetGet().get() || props.userAuth
+      userAuth: storage.get() || props.userAuth
     }
   }
 
@@ -18,10 +20,11 @@ class Notes extends React.Component {
     try {
       let response;
       if (this.state.userAuth) {
-        console.log(this.state.userAuth)
-        response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth}`, {
+        console.log('User ID:')
+        console.log(this.state.userAuth[1])
+        response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth[1]}`, {
           headers: {
-            'authorization': this.state.userAuth,
+            'authorization': this.state.userAuth[0],
             'Accept' : 'application/json',
             'Content-Type': 'application/json'
           }
@@ -51,14 +54,17 @@ class Notes extends React.Component {
   async sendPost () {
     if (!this.state.userAuth) {
       console.log('Not logged in')
+      return
     }
     if (!this.state.title || !this.state.content) { return }
     try {
       await axios.post('https://localhost:3000/notesPost', {
-        userString: this.state.userAuth,
+        userString: this.state.userAuth[1],
         title: this.state.title,
         content: this.state.content
       })
+      console.log(this.state.userAuth, this.state.title, this.state.content)
+      console.log('Successfully posted')
     } catch (err) {
       console.error(err)
     }

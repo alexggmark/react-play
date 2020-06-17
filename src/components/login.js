@@ -5,6 +5,7 @@ import {
   LOGIN_USER
 } from '../constants/actions'
 import storageSetGet from '../utils/storageSetGet'
+import sendInputToState from '../utils/sendInputToState'
 
 const storage = new storageSetGet()
 
@@ -34,16 +35,7 @@ class Login extends React.Component {
   }
 
   handleInputChange (event, input) {
-    switch (input) {
-      case 'name':
-        this.setState({ userName: event.target.value })
-        break
-      case 'pass':
-        this.setState({ userPassword: event.target.value })
-        break
-      default:
-        console.log('Nothing')
-    }
+    sendInputToState(event, input, this)
   }
 
   async loginApi () {
@@ -53,15 +45,23 @@ class Login extends React.Component {
         userPassword: this.state.userPassword
       })
 
+      console.log('USER ID:')
+      console.log(res.data.user._id)
+
       this.props.dispatch({
         type: LOGIN_USER,
-        payload: res.data.token
+        payload: res.data.token,
+        payloadId: res.data.user._id
       })
 
-      storage.set(res.data.token)
+      storage.set(res.data.token, res.data.user._id)
     } catch (err) {
       console.error(err)
     }
+  }
+
+  logout () {
+    storage.clear()
   }
 
   render () {
@@ -78,6 +78,7 @@ class Login extends React.Component {
           type="text"
         />
         <button onClick={() => this.loginApi()}>Login</button>
+        <button onClick={() => this.logout()}>Logout</button>
         {this.props.userAuth || storage.get() ? (
           <div>User logged in: {this.props.userAuth}</div>
         ) : <div>User NOT logged in!</div>}

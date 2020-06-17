@@ -1,21 +1,28 @@
 export default class storageSetGet {
   constructor () {
     this.key = 'userToken'
+    this.keyId = 'userId'
   }
 
   get () {
     const userKey = localStorage.getItem(this.key)
-    if (userKey) {
-      return userKey
+    const userId = localStorage.getItem(this.keyId)
+    if (userKey && userId) {
+      return [ userKey, userId ]
     }
     return false
   }
 
-  set (credentials) {
-    if (credentials) {
-      localStorage.setItem(this.key, credentials)
+  set (token, id) {
+    if (token && id) {
+      localStorage.setItem(this.key, token)
+      localStorage.setItem(this.keyId, id)
       return true
     }
     return false
+  }
+
+  clear () {
+    localStorage.clear()
   }
 }

@@ -7,7 +7,8 @@ export default (state = {}, action) => {
     case LOGIN_USER:
       return {
         ...state,
-        userAuth: action.payload
+        userAuth: action.payload,
+        userId: action.payloadId
       }
     default:
       return state

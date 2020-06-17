@@ -3,7 +3,20 @@ const router = express.Router()
 const users = require('../models/users')
 const auth = require('../middleware/auth')
 
+/**
+ * TEST ROUTE FIXME:
+ */
+router.get('/getAllUsers', async (req, res) => {
+  try {
+    const result = await users.find().exec()
+    res.send(result)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.get('/usersGet', auth, async (req, res) => {
+  console.log(req.user)
   try {
     const result = await req.user
     res.send(result)
