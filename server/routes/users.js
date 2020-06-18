@@ -16,11 +16,9 @@ router.get('/getAllUsers', async (req, res) => {
 })
 
 router.get('/usersGet', auth, async (req, res) => {
-  console.log(req.user)
   try {
     const result = await req.user
     res.send(result)
-    console.log(req.user)
   } catch (err) {
     console.error(err)
   }

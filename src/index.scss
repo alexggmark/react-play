@@ -1,0 +1,20 @@
+.notes-app {
+  background-color: #eeeeee;
+  box-sizing: border-box;
+  display: flex;
+  margin: 0 auto;
+  width: 1200px;
+
+  &__sidebar {
+    border: 1px solid green;
+    flex-shrink: 0;
+    overflow-wrap: anywhere;
+    width: 300px;
+  }
+
+  &__main {
+    border: 1px solid red;
+    flex-grow: 1;
+    overflow-wrap: anywhere;
+  }
+}

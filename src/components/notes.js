@@ -5,6 +5,12 @@ import storageSetGet from '../utils/storageSetGet'
 
 const storage = new storageSetGet()
 
+const Error = () => {
+  return (
+    <div>Error not logged in!</div>
+  )
+}
+
 class Notes extends React.Component {
   constructor (props) {
     super (props)
@@ -12,11 +18,16 @@ class Notes extends React.Component {
       title: '',
       content: '',
       currentPosts: [],
-      userAuth: storage.get() || props.userAuth
+      userAuth: props.userAuth || storage.get(),
+      error: false
     }
   }
 
-  async componentDidMount () {
+  componentDidMount () {
+    this.getData()
+  }
+
+  async getData () {
     try {
       let response;
       if (this.state.userAuth) {
@@ -51,11 +62,26 @@ class Notes extends React.Component {
     }
   }
 
+  async deleteNote(id) {
+    console.log(id)
+    try {
+      await axios.delete(`https://localhost:3000/notesDelete/${id}`)
+      this.getData()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   async sendPost () {
+    console.log(this.props.userAuth)
     if (!this.state.userAuth) {
-      console.log('Not logged in')
+      this.setState({ error: true })
       return
     }
+    if (this.state.error) {
+      this.setState({ error: false })
+    }
+
     if (!this.state.title || !this.state.content) { return }
     try {
       await axios.post('https://localhost:3000/notesPost', {
@@ -63,8 +89,7 @@ class Notes extends React.Component {
         title: this.state.title,
         content: this.state.content
       })
-      console.log(this.state.userAuth, this.state.title, this.state.content)
-      console.log('Successfully posted')
+      this.getData()
     } catch (err) {
       console.error(err)
     }
@@ -90,6 +115,7 @@ class Notes extends React.Component {
             Submit
           </button>
         </div>
+        {this.state.error && <Error />}
         <div>
           <h2>Output Area</h2>
           <ul>
@@ -97,6 +123,7 @@ class Notes extends React.Component {
               return (
                 <li key={index}>
                   {item.title} - {item.userString} - {item.content}
+                  <button onClick={() => this.deleteNote(item._id)}>X</button>
                 </li>
               )
             })}

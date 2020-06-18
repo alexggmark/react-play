@@ -15,6 +15,7 @@ router.get('/notesGet', async (req, res) => {
 router.get('/notesGetUser/:id', auth, async (req, res) => {
   try {
     const result = await Notes.find({ userString: req.params.id }).exec()
+    console.log(result)
     res.send(result)
   } catch (err) {
     console.error(err)

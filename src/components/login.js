@@ -2,7 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import {
-  LOGIN_USER
+  LOGIN_USER,
+  LOGOUT_USER
 } from '../constants/actions'
 import storageSetGet from '../utils/storageSetGet'
 import sendInputToState from '../utils/sendInputToState'
@@ -62,6 +63,9 @@ class Login extends React.Component {
 
   logout () {
     storage.clear()
+    this.props.dispatch({
+      type: LOGOUT_USER
+    })
   }
 
   render () {

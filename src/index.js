@@ -5,15 +5,20 @@ import { Store } from './store'
 import Login from './components/Login'
 import Register from './components/Register'
 import Notes from './components/Notes'
+import './index.scss'
 
 class App extends React.Component {
   render () {
     return (
-      <>
-        <Login />
-        <Register />
-        <Notes />
-      </>
+      <div className="notes-app">
+        <div className="notes-app__sidebar">
+          <Login />
+          <Register />
+        </div>
+        <div className="notes-app__main">
+          <Notes />
+        </div>
+      </div>
     )
   }
 }
