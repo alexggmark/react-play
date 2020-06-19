@@ -1,5 +1,8 @@
 import React from 'react'
 import axios from 'axios'
+import {
+  COMPILE_NOTES
+} from '../constants/actions'
 import { connect } from 'react-redux'
 import storageSetGet from '../utils/storageSetGet'
 
@@ -43,10 +46,36 @@ class Notes extends React.Component {
       } else {
         response = await axios.get('https://localhost:3000/notesGet')
       }
-      this.setState({ currentPosts: response.data })
+      // this.setState({ currentPosts: response.data })
+      this.props.dispatch({
+        type: COMPILE_NOTES,
+        payload: response.data
+      })
     } catch (err) {
       console.error(err)
     }
+  }
+
+  getNoteCurrent (id) {
+    if (!this.props.notesData) { return }
+
+    const current = this.props.notesData.find((item) => {
+      return item._id === id
+    })
+
+    console.log(this.props.notesData)
+
+    return (
+      <div>
+      {current ?
+        <span>
+          <h1>{current.title}</h1>
+          <p>{current.content}</p>
+          <button onClick={() => this.deleteNote(current._id)}>X</button>
+        </span>
+      : ''}
+      </div>
+    )
   }
 
   handleInputChange = (event, input) => {
@@ -117,25 +146,35 @@ class Notes extends React.Component {
         </div>
         {this.state.error && <Error />}
         <div>
-          <h2>Output Area</h2>
-          <ul>
-            {this.state.currentPosts.map((item, index) => {
+          <h2>Note:</h2>
+          {this.getNoteCurrent(this.props.noteCurrent)}
+          {/* {this.props.noteCurrent ?
+            this.props.notesData.find((item) => {
+              return item._id === this.props.noteCurrent
+            })
+          : 'Pick a note guy'} */}
+
+          {/* {this.props.notesData ?
+            this.props.notesData.map((item, index) => {
               return (
                 <li key={index}>
-                  {item.title} - {item.userString} - {item.content}
-                  <button onClick={() => this.deleteNote(item._id)}>X</button>
+                {item.title} - {item.userString} - {item.content}
+                <button onClick={() => this.deleteNote(item._id)}>X</button>
                 </li>
               )
-            })}
-          </ul>
+            })
+          : ''} */}
+          {/* {this.props.notesData} */}
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ Login }) => ({
-  userAuth: Login.userAuth
+const mapStateToProps = ({ Login, Notes }) => ({
+  userAuth: Login.userAuth,
+  notesData: Notes.notesData,
+  noteCurrent: Notes.currentNote
 })
 
 export default connect(mapStateToProps)(Notes)

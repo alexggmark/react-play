@@ -5,6 +5,7 @@ import { Store } from './store'
 import Login from './components/Login'
 import Register from './components/Register'
 import Notes from './components/Notes'
+import Sidebar from './components/Sidebar'
 import './index.scss'
 
 class App extends React.Component {
@@ -14,6 +15,7 @@ class App extends React.Component {
         <div className="notes-app__sidebar">
           <Login />
           <Register />
+          <Sidebar />
         </div>
         <div className="notes-app__main">
           <Notes />
