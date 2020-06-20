@@ -20,7 +20,6 @@ class Notes extends React.Component {
     this.state = {
       title: '',
       content: '',
-      currentPosts: [],
       userAuth: props.userAuth || storage.get(),
       error: false
     }
@@ -30,27 +29,32 @@ class Notes extends React.Component {
     this.getData()
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.userAuth !== this.props.userAuth) {
+      console.log('Logged in?')
+      this.getData()
+    }
+  }
+
   async getData () {
     try {
       let response;
-      if (this.state.userAuth) {
-        console.log('User ID:')
-        console.log(this.state.userAuth[1])
-        response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth[1]}`, {
-          headers: {
-            'authorization': this.state.userAuth[0],
-            'Accept' : 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-      } else {
-        response = await axios.get('https://localhost:3000/notesGet')
-      }
-      // this.setState({ currentPosts: response.data })
+      console.log('Getting data')
+      if (!this.state.userAuth) { return }
+      console.log('Userauth exists')
+      console.log(this.state.userAuth[1])
+      response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth[1]}`, {
+        headers: {
+          'authorization': this.state.userAuth[0],
+          'Accept' : 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
       this.props.dispatch({
         type: COMPILE_NOTES,
         payload: response.data
       })
+      console.log(this.props.notesData)
     } catch (err) {
       console.error(err)
     }
@@ -147,24 +151,8 @@ class Notes extends React.Component {
         {this.state.error && <Error />}
         <div>
           <h2>Note:</h2>
-          {this.getNoteCurrent(this.props.noteCurrent)}
-          {/* {this.props.noteCurrent ?
-            this.props.notesData.find((item) => {
-              return item._id === this.props.noteCurrent
-            })
-          : 'Pick a note guy'} */}
-
-          {/* {this.props.notesData ?
-            this.props.notesData.map((item, index) => {
-              return (
-                <li key={index}>
-                {item.title} - {item.userString} - {item.content}
-                <button onClick={() => this.deleteNote(item._id)}>X</button>
-                </li>
-              )
-            })
-          : ''} */}
-          {/* {this.props.notesData} */}
+          Auth: {this.state.userAuth}
+          {this.state.userAuth && this.getNoteCurrent(this.props.noteCurrent)}
         </div>
       </div>
     )

@@ -3,7 +3,8 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import {
   LOGIN_USER,
-  LOGOUT_USER
+  LOGOUT_USER,
+  CLEAR_NOTES
 } from '../constants/actions'
 import storageSetGet from '../utils/storageSetGet'
 import sendInputToState from '../utils/sendInputToState'
@@ -46,9 +47,6 @@ class Login extends React.Component {
         userPassword: this.state.userPassword
       })
 
-      console.log('USER ID:')
-      console.log(res.data.user._id)
-
       this.props.dispatch({
         type: LOGIN_USER,
         payload: res.data.token,
@@ -65,6 +63,9 @@ class Login extends React.Component {
     storage.clear()
     this.props.dispatch({
       type: LOGOUT_USER
+    })
+    this.props.dispatch({
+      type: CLEAR_NOTES
     })
   }
 
