@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { getNotes, sendNote } from '../redux/actions/notes.actions'
-import axios from 'axios'
+import { asyncGetNotes, asyncSendNote, asyncDeleteNote } from '../redux/actions/notes.actions'
 
 const Error = () => {
   return (
-    <div>Error not logged in!</div>
+    <div>Must be logged in and message mustn't be empty!</div>
   )
 }
 
@@ -14,19 +13,9 @@ const Notes = (props) => {
   const [content, setContent] = useState('')
   const [error, setError] = useState(false)
 
-  // useEffect(() => {
-  //   const abortController = new AbortController()
+  // const getData = () => {
   //   props.getNotes(props.userAuth)
-
-  //   return () => {
-  //     abortController.abort()
-  //   }
-  //   // FIXME: why is this wrong
-  // }, [props])
-
-  const getData = () => {
-    props.getNotes(props.userAuth)
-  }
+  // }
 
   const getNoteCurrent = (id) => {
     if (!props.notesData) { return }
@@ -35,6 +24,7 @@ const Notes = (props) => {
       return item._id === id
     })
 
+    console.log('State: notesdata')
     console.log(props.notesData)
 
     return (
@@ -43,7 +33,7 @@ const Notes = (props) => {
         <span>
           <h1>{current.title}</h1>
           <p>{current.content}</p>
-          <button onClick={() => deleteNote(current._id)}>X</button>
+          <button onClick={() => props.deleteNote(current._id)}>X</button>
         </span>
       : ''}
       </div>
@@ -63,24 +53,31 @@ const Notes = (props) => {
     }
   }
 
-  const deleteNote = async (id) => {
-    try {
-      await axios.delete(`https://localhost:3000/notesDelete/${id}`)
-      getData()
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  // const deleteNote = async (id) => {
+  //   try {
+  //     await axios.delete(`https://localhost:3000/notesDelete/${id}`)
+  //     getData()
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   const sendPost = async () => {
     if (error) {
       setError(false)
     }
 
-    if (!props.userAuth || !title || !content) {
+    if (!props.userAuth) {
       setError(true)
       return
     }
+
+    if (!title || !content) {
+      setError(true)
+      return
+    }
+
+    console.log(props.userAuth)
 
     props.sendNote(title, content, props.userAuth[1])
   }
@@ -103,7 +100,7 @@ const Notes = (props) => {
           Submit
         </button>
       </div>
-      {props.error && <Error />}
+      {error && <Error />}
       <div>
         {props.userAuth && getNoteCurrent(props.noteCurrent)}
       </div>
@@ -118,8 +115,9 @@ const mapStateToProps = ({ Login, Notes }) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getNotes: (auth) => dispatch(getNotes(auth)),
-  sendNote: (title, content, auth) => dispatch(sendNote(title, content, auth))
+  getNotes: (auth) => dispatch(asyncGetNotes(auth)),
+  sendNote: (title, content, auth) => dispatch(asyncSendNote(title, content, auth)),
+  deleteNote: (id) => dispatch(asyncDeleteNote(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes)

@@ -15,7 +15,6 @@ const Sidebar = (props) => {
   return (
     <div className="sidebar">
       <h1>Sidebar</h1>
-      <p>User Auth: {props.userAuth}</p>
       <p>{props.notesData && 'Notes in state'}</p>
       {props.notesData && props.userAuth ?
         props.notesData.map((item, index) => {

@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import {
-  LOGOUT_USER,
-  CLEAR_NOTES
-} from '../redux/constants/actions.constants'
-import { loginAction } from '../redux/actions/login.actions'
+import { loginAction, loginStorageAction, logoutAction } from '../redux/actions/login.actions'
 
 const Login = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    props.loginStorageApi(props.userAuth)
+  }, [props])
 
   const handleInputChange = (event, input) => {
     switch (input) {
@@ -28,12 +28,7 @@ const Login = (props) => {
   }
 
   const logout = () => {
-    props.dispatch({
-      type: LOGOUT_USER
-    })
-    props.dispatch({
-      type: CLEAR_NOTES
-    })
+    props.logoutApi()
   }
 
   return (
@@ -53,7 +48,7 @@ const Login = (props) => {
       {
         props.userAuth ?
           (
-            <div>User logged in: {props.userAuth}</div>
+            <div>User logged in: {props.userAuth[2]}</div>
           ) :
             <div>User NOT logged in!</div>
       }
@@ -66,7 +61,9 @@ const mapStateToProps = ({ Login }) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  loginApi: (username, password) => dispatch(loginAction(username, password))
+  loginApi: (username, password) => dispatch(loginAction(username, password)),
+  loginStorageApi: (auth) => dispatch(loginStorageAction(auth)),
+  logoutApi: () => dispatch(logoutAction())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

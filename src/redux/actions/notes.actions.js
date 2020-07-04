@@ -2,10 +2,12 @@ import axios from 'axios'
 import {
   API_URL,
   COMPILE_NOTES,
-  ADD_NOTE
+  ADD_NOTE,
+  DELETE_NOTE,
+  CLEAR_NOTES
 } from '../constants/actions.constants'
 
-export const getNotes = (auth) => {
+export const asyncGetNotes = (auth) => {
   console.log('Action: get notes')
   console.log(auth)
   return async (dispatch) => {
@@ -26,16 +28,28 @@ export const getNotes = (auth) => {
   }
 }
 
-export const sendNote = (title, content, auth) => {
+export const asyncSendNote = (title, content, auth) => {
   console.log('Action: send note')
   return async (dispatch) => {
     try {
-      await axios.post('https://localhost:3000/notesPost', {
+      await axios.post(`${API_URL}/notesPost`, {
         userString: auth,
         title,
         content
       })
+      console.log('Action: successful note post')
       dispatch(addNote({ title, content }))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
+export const asyncDeleteNote = (id) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`${API_URL}/notesDelete/${id}`)
+      dispatch(deleteNote(id))
     } catch (err) {
       console.error(err)
     }
@@ -54,5 +68,18 @@ const addNote = (data) => {
   return {
     type: ADD_NOTE,
     payload: data
+  }
+}
+
+const deleteNote = (id) => {
+  return {
+    type: DELETE_NOTE,
+    payload: id
+  }
+}
+
+export const clearNotes = () => {
+  return {
+    type: CLEAR_NOTES
   }
 }

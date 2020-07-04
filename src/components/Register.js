@@ -33,7 +33,6 @@ const Register = () => {
 
   return (
     <div className="register">
-      <p>Current state: {username} - {password}</p>
       <input
         onChange={(event) => handleInputChange(event, 'name')}
         placeholder="User name"

@@ -8,13 +8,12 @@ export default (state = {}, action) => {
     case LOGIN_USER:
       return {
         ...state,
-        userAuth: [action.payload, action.payloadId]
+        userAuth: [action.payload, action.payloadId, action.username]
       }
     case LOGOUT_USER:
       return {
         ...state,
-        userAuth: null,
-        userId: null
+        userAuth: null
       }
     default:
       return state
