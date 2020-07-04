@@ -1,25 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
-import sendInputToState from '../utils/sendInputToState'
 
-export default class Register extends React.Component {
-  constructor () {
-    super ()
-    this.state = {
-      userName: '',
-      userPassword: ''
+const Register = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleInputChange = (event, input) => {
+    switch (input) {
+      case 'name':
+        setUsername(event.target.value)
+        break
+      case 'pass':
+        setPassword(event.target.value)
+        break
+      default:
+        break
     }
   }
 
-  handleInputChange (event, name) {
-    sendInputToState(event, name, this)
-  }
-
-  async registerApi () {
+  const registerApi = async () => {
     try {
       await axios.post('https://localhost:3000/createUser', {
-        userName: this.state.userName,
-        userPassword: this.state.userPassword
+        userName: username,
+        userPassword: password
       })
 
       console.log('Register success')
@@ -28,22 +31,22 @@ export default class Register extends React.Component {
     }
   }
 
-  render () {
-    return (
-      <div className="register">
-        <p>Current state: {this.state.userName} - {this.state.userPassword}</p>
-        <input
-          onChange={(event) => this.handleInputChange(event, 'name')}
-          placeholder="User name"
-          type="text"
-        />
-        <input
-          onChange={(event) => this.handleInputChange(event, 'pass')}
-          placeholder="Password"
-          type="text"
-        />
-        <button onClick={() => this.registerApi()}>Register</button>
-      </div>
-    )
-  }
+  return (
+    <div className="register">
+      <p>Current state: {username} - {password}</p>
+      <input
+        onChange={(event) => handleInputChange(event, 'name')}
+        placeholder="User name"
+        type="text"
+      />
+      <input
+        onChange={(event) => handleInputChange(event, 'pass')}
+        placeholder="Password"
+        type="text"
+      />
+      <button onClick={() => registerApi()}>Register</button>
+    </div>
+  )
 }
+
+export default Register

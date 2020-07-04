@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { getNotes, sendNote } from '../redux/actions/notes.actions'
 import axios from 'axios'
@@ -14,9 +14,15 @@ const Notes = (props) => {
   const [content, setContent] = useState('')
   const [error, setError] = useState(false)
 
-  useEffect(() => {
-    props.getNotes(props.userAuth)
-  })
+  // useEffect(() => {
+  //   const abortController = new AbortController()
+  //   props.getNotes(props.userAuth)
+
+  //   return () => {
+  //     abortController.abort()
+  //   }
+  //   // FIXME: why is this wrong
+  // }, [props])
 
   const getData = () => {
     props.getNotes(props.userAuth)
@@ -76,7 +82,7 @@ const Notes = (props) => {
       return
     }
 
-    props.sendNote()
+    props.sendNote(title, content, props.userAuth[1])
   }
 
   return (
@@ -113,7 +119,7 @@ const mapStateToProps = ({ Login, Notes }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getNotes: (auth) => dispatch(getNotes(auth)),
-  sendNote: () => dispatch(sendNote)
+  sendNote: (title, content, auth) => dispatch(sendNote(title, content, auth))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes)

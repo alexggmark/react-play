@@ -4,9 +4,10 @@ import {
   API_URL,
   LOGIN_USER
 } from '../constants/actions.constants'
+import { getNotes } from './notes.actions'
 
 export const loginAction = (username, password) => {
-  console.log('Running action')
+  console.log('Action: login action')
   return async (dispatch) => {
     try {
       const res = await axios.post(`${API_URL}/login`, {
@@ -15,6 +16,7 @@ export const loginAction = (username, password) => {
       })
 
       dispatch(sendLoginToStore(res.data))
+      dispatch(getNotes([res.data.token, res.data.user._id]))
 
       storage.set(res.data.token, res.data.user._id)
     } catch (err) {
