@@ -20,26 +20,30 @@ const Sidebar = (props) => {
 
   return (
     <div className="sidebar">
-      <h1>Sidebar</h1>
-      <p>{props.notesData && props.notesData.length === 0 && 'No notes yet!'}</p>
-      {props.notesData && props.userAuth ? (
-        <ul className="sidebar__container">
-          {props.notesData.map((item, index) => {
-            return (
-              <li
-                className="sidebar__item"
-                key={'sidebarNote-' + index}
-              >
-                <span className="sidebar__item--1">
-                  {item.title}
-                </span>
-                <button className="sidebar__item--2" onClick={() => editCurrent(item._id)}>Edit</button>
-                <button className="sidebar__item--3" onClick={() => deleteNote(item._id)}>x</button>
-              </li>
-            )
-          })}
-        </ul>
-      ) : ''}
+      {props.userAuth ? (
+        <>
+          <h1>Your notes</h1>
+          <p>{props.notesData && props.notesData.length === 0 && 'No notes yet!'}</p>
+          {props.notesData ? (
+            <ul className="sidebar__container">
+              {props.notesData.map((item, index) => {
+                return (
+                  <li
+                    className="sidebar__item"
+                    key={'sidebarNote-' + index}
+                  >
+                    <span className="sidebar__item--1">
+                      {item.title}
+                    </span>
+                    <button className="sidebar__item--2" onClick={() => editCurrent(item._id)}>Edit</button>
+                    <button className="sidebar__item--3" onClick={() => deleteNote(item._id)}>x</button>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : ''}
+        </>
+      ) : null}
     </div>
   )
 }

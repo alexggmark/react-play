@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { asyncGetNotes, asyncSendNote, asyncDeleteNote } from '../redux/actions/notes.actions'
+import './notes.scss'
 
 const Error = () => {
   return (
@@ -24,15 +25,15 @@ const Notes = (props) => {
     console.log(props.notesData)
 
     return (
-      <div>
-      {current ?
-        <span>
-          <h1>{current.title}</h1>
-          <p>{current.content}</p>
-          <button onClick={() => props.deleteNote(current._id)}>X</button>
-        </span>
-      : ''}
-      </div>
+      <>
+        {current ?
+          <div className="notes__editing">
+            <h1>{current.title}</h1>
+            <p>{current.content}</p>
+            <button onClick={() => props.deleteNote(current._id)}>X</button>
+          </div>
+        : ''}
+      </>
     )
   }
 
@@ -69,6 +70,7 @@ const Notes = (props) => {
 
   return (
     <div className="notes">
+      {props.userAuth ? (
       <div>
         <h2>Input Area</h2>
         <input
@@ -82,9 +84,10 @@ const Notes = (props) => {
           type="text"
         />
         <button onClick={() => sendPost()}>
-          Submit
+          Add note
         </button>
       </div>
+      ) : 'Login to edit notes!'}
       {error && <Error />}
       <div>
         {props.userAuth && getNoteCurrent(props.noteCurrent)}

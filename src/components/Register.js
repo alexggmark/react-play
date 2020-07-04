@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import {
-  USER_REGISTER
+  USER_REGISTER,
+  USER_REGISTER_SUCCESS
 } from '../redux/constants/actions.constants'
 
 const Register = (props) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState(null)
+  const [password, setPassword] = useState(null)
+
+  const resetState = () => {
+    setUsername(null)
+    setPassword(null)
+  }
 
   const handleInputChange = (event, input) => {
     switch (input) {
@@ -29,7 +35,13 @@ const Register = (props) => {
         userPassword: password
       })
 
-      console.log('Register success')
+      resetState()
+      toggleRegister(false)
+
+      props.dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: true
+      })
     } catch (err) {
       console.error(err)
     }
@@ -65,7 +77,8 @@ const Register = (props) => {
 }
 
 const mapStateToProps = ({ Login }) => ({
-  userRegister: Login.userRegister
+  userRegister: Login.userRegister,
+  userRegistrationSuccess: Login.userRegistrationSuccess
 })
 
 

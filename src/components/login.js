@@ -72,6 +72,7 @@ const Login = (props) => {
             <div className="error">Please enter username/password</div>
           )}
           <button onClick={() => toggleRegister(true)}>Register new user</button>
+          {props.userRegistrationSuccess ? <p>Registration successful!</p> : null}
         </>
       ) : null}
       {props.userAuth ? (
@@ -86,7 +87,8 @@ const Login = (props) => {
 
 const mapStateToProps = ({ Login }) => ({
   userAuth: Login.userAuth,
-  userRegister: Login.userRegister
+  userRegister: Login.userRegister,
+  userRegistrationSuccess: Login.userRegistrationSuccess
 })
 
 const mapDispatchToProps = (dispatch) => ({
