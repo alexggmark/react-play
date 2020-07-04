@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import axios from 'axios'
+import {
+  USER_REGISTER
+} from '../redux/constants/actions.constants'
 
-const Register = () => {
+const Register = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -31,21 +35,38 @@ const Register = () => {
     }
   }
 
+  const toggleRegister = (bool) => {
+    props.dispatch({
+      type: USER_REGISTER,
+      payload: bool
+    })
+  }
+
   return (
-    <div className="register">
-      <input
-        onChange={(event) => handleInputChange(event, 'name')}
-        placeholder="User name"
-        type="text"
-      />
-      <input
-        onChange={(event) => handleInputChange(event, 'pass')}
-        placeholder="Password"
-        type="text"
-      />
-      <button onClick={() => registerApi()}>Register</button>
-    </div>
+    <>
+      {props.userRegister && (
+        <div className="register">
+          <input
+            onChange={(event) => handleInputChange(event, 'name')}
+            placeholder="User name"
+            type="text"
+          />
+          <input
+            onChange={(event) => handleInputChange(event, 'pass')}
+            placeholder="Password"
+            type="text"
+          />
+          <button onClick={() => registerApi()}>Register</button>
+          <button onClick={() => toggleRegister(false)}>X</button>
+        </div>
+      )}
+    </>
   )
 }
 
-export default Register
+const mapStateToProps = ({ Login }) => ({
+  userRegister: Login.userRegister
+})
+
+
+export default connect(mapStateToProps)(Register)

@@ -1,17 +1,18 @@
 body {
-  background-color: #FAFCFF;
+  background-color: #eff5ff;
   color: #002966;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 button {
   border: 0;
-  border-radius: 5px;
-  background-color: #FF4D00;
+  border-radius: 50px;
+  background-color: #b7becc;
   color: #ffffff;
   cursor: pointer;
   padding: 0.4rem 0.8rem;
   margin: 0.2rem;
+  transition: background-color 0.1s;
 
   &:hover {
     background-color: #FF6725;
@@ -33,7 +34,7 @@ input {
   width: 1200px;
 
   &__sidebar {
-    background-color: #FFF8F5;
+    background-color: #FAFCFF;
     flex-shrink: 0;
     overflow-wrap: anywhere;
     padding: 2rem 1.5rem;

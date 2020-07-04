@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginAction, loginStorageAction, logoutAction } from '../redux/actions/login.actions'
+import {
+  USER_REGISTER
+} from '../redux/constants/actions.constants'
 
 const Login = (props) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState(null)
+  const [password, setPassword] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     props.loginStorageApi(props.userAuth)
   }, [props])
+
+  const resetState = () => {
+    setError(false)
+    setUsername(null)
+    setPassword(null)
+  }
 
   const handleInputChange = (event, input) => {
     switch (input) {
@@ -24,43 +34,63 @@ const Login = (props) => {
   }
 
   const loginApi = () => {
+    if (!username || !password) {
+      setError(true)
+      return
+    }
     props.loginApi(username, password)
+    resetState()
   }
 
   const logout = () => {
     props.logoutApi()
   }
 
+  const toggleRegister = (bool) => {
+    props.dispatch({
+      type: USER_REGISTER,
+      payload: bool
+    })
+  }
+
   return (
     <div className="app">
-      <input
-        onChange={(event) => handleInputChange(event, 'name')}
-        placeholder="User name"
-        type="text"
-      />
-      <input
-        onChange={(event) => handleInputChange(event, 'pass')}
-        placeholder="Password"
-        type="text"
-      />
-      <button onClick={() => loginApi()}>Login</button>
-      <button onClick={() => logout()}>Logout</button>
-      {
-        props.userAuth ?
-          (
-            <div>User logged in: {props.userAuth[2]}</div>
-          ) :
-            <div>User NOT logged in!</div>
-      }
+      {!props.userAuth && !props.userRegister ? (
+        <>
+          <input
+            onChange={(event) => handleInputChange(event, 'name')}
+            placeholder="User name"
+            type="text"
+          />
+          <input
+            onChange={(event) => handleInputChange(event, 'pass')}
+            placeholder="Password"
+            type="text"
+          />
+          <button onClick={() => loginApi()}>Login</button>
+          {error && (
+            <div className="error">Please enter username/password</div>
+          )}
+          <button onClick={() => toggleRegister(true)}>Register new user</button>
+        </>
+      ) : null}
+      {props.userAuth ? (
+        <>
+          <div>User logged in: {props.userAuth[2]}</div>
+          <button onClick={() => logout()}>Logout</button>
+        </>
+      ) : null}
     </div>
   )
 }
 
 const mapStateToProps = ({ Login }) => ({
-  userAuth: Login.userAuth
+  userAuth: Login.userAuth,
+  userRegister: Login.userRegister
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  dispatch: (callback) => dispatch(callback),
   loginApi: (username, password) => dispatch(loginAction(username, password)),
   loginStorageApi: (auth) => dispatch(loginStorageAction(auth)),
   logoutApi: () => dispatch(logoutAction())

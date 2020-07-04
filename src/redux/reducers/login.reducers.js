@@ -1,6 +1,7 @@
 import {
   LOGIN_USER,
-  LOGOUT_USER
+  LOGOUT_USER,
+  USER_REGISTER
 } from '../constants/actions.constants'
 
 export default (state = {}, action) => {
@@ -14,6 +15,11 @@ export default (state = {}, action) => {
       return {
         ...state,
         userAuth: null
+      }
+    case USER_REGISTER:
+      return {
+        ...state,
+        userRegister: action.payload
       }
     default:
       return state

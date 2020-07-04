@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import {
   EDIT_CURRENT
 } from '../redux/constants/actions.constants'
+import { asyncDeleteNote } from '../redux/actions/notes.actions'
+import './sidebar.scss'
 
 const Sidebar = (props) => {
   const editCurrent = (id) => {
@@ -12,17 +14,32 @@ const Sidebar = (props) => {
     })
   }
 
+  const deleteNote = (id) => {
+    props.deleteNote(id)
+  }
+
   return (
     <div className="sidebar">
       <h1>Sidebar</h1>
-      <p>{props.notesData && 'Notes in state'}</p>
-      {props.notesData && props.userAuth ?
-        props.notesData.map((item, index) => {
-          return (
-            <li key={'sidebarNote-' + index}>{item.title}<button onClick={() => editCurrent(item._id)}>Edit</button></li>
-          )
-        })
-      : ''}
+      <p>{props.notesData && props.notesData.length === 0 && 'No notes yet!'}</p>
+      {props.notesData && props.userAuth ? (
+        <ul className="sidebar__container">
+          {props.notesData.map((item, index) => {
+            return (
+              <li
+                className="sidebar__item"
+                key={'sidebarNote-' + index}
+              >
+                <span className="sidebar__item--1">
+                  {item.title}
+                </span>
+                <button className="sidebar__item--2" onClick={() => editCurrent(item._id)}>Edit</button>
+                <button className="sidebar__item--3" onClick={() => deleteNote(item._id)}>x</button>
+              </li>
+            )
+          })}
+        </ul>
+      ) : ''}
     </div>
   )
 }
@@ -32,4 +49,9 @@ const mapStateToProps = ({ Login, Notes }) => ({
   notesData: Notes.notesData
 })
 
-export default connect(mapStateToProps)(Sidebar)
+const mapDispatchToProps = (dispatch) => ({
+  dispatch: (callback) => dispatch(callback),
+  deleteNote: (id) => dispatch(asyncDeleteNote(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)

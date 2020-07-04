@@ -13,10 +13,6 @@ const Notes = (props) => {
   const [content, setContent] = useState('')
   const [error, setError] = useState(false)
 
-  // const getData = () => {
-  //   props.getNotes(props.userAuth)
-  // }
-
   const getNoteCurrent = (id) => {
     if (!props.notesData) { return }
 
@@ -53,15 +49,6 @@ const Notes = (props) => {
     }
   }
 
-  // const deleteNote = async (id) => {
-  //   try {
-  //     await axios.delete(`https://localhost:3000/notesDelete/${id}`)
-  //     getData()
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
-
   const sendPost = async () => {
     if (error) {
       setError(false)
@@ -76,8 +63,6 @@ const Notes = (props) => {
       setError(true)
       return
     }
-
-    console.log(props.userAuth)
 
     props.sendNote(title, content, props.userAuth[1])
   }
