@@ -1,11 +1,17 @@
 import {
+  ADD_NOTE,
   CLEAR_NOTES,
   COMPILE_NOTES,
   EDIT_CURRENT
-} from '../constants/actions'
+} from '../constants/actions.constants'
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case ADD_NOTE:
+      return {
+        ...state,
+        notesData: [...state.notesData, action.payload]
+      }
     case CLEAR_NOTES:
       return {}
     case COMPILE_NOTES:

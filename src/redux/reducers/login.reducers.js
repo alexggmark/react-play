@@ -1,18 +1,16 @@
 import {
   LOGIN_USER,
   LOGOUT_USER
-} from '../constants/actions'
+} from '../constants/actions.constants'
 
 export default (state = {}, action) => {
   switch (action.type) {
     case LOGIN_USER:
       return {
         ...state,
-        userAuth: action.payload,
-        userId: action.payloadId
+        userAuth: [action.payload, action.payloadId]
       }
     case LOGOUT_USER:
-      console.log('LOGOUT TIME')
       return {
         ...state,
         userAuth: null,

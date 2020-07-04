@@ -2,10 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   EDIT_CURRENT
-} from '../constants/actions'
-import storageSetGet from '../utils/storageSetGet'
-
-const storage = new storageSetGet()
+} from '../redux/constants/actions.constants'
+import storage from '../utils/storageSetGet'
 
 class Sidebar extends React.Component {
   constructor (props) {
@@ -26,7 +24,7 @@ class Sidebar extends React.Component {
     return (
       <div className="sidebar">
         <h1>Sidebar</h1>
-        <p>User Auth: {this.props.userAuth} - {storage.get()}</p>
+        <p>User Auth: {this.props.userAuth}</p>
         <p>{this.props.notesData && 'Notes in state'}</p>
         {this.props.notesData && this.state.userAuth ?
           this.props.notesData.map((item, index) => {

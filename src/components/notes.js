@@ -1,12 +1,7 @@
-import React from 'react'
-import axios from 'axios'
-import {
-  COMPILE_NOTES
-} from '../constants/actions'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import storageSetGet from '../utils/storageSetGet'
-
-const storage = new storageSetGet()
+import { getNotes, sendNote } from '../redux/actions/notes.actions'
+import axios from 'axios'
 
 const Error = () => {
   return (
@@ -14,60 +9,27 @@ const Error = () => {
   )
 }
 
-class Notes extends React.Component {
-  constructor (props) {
-    super (props)
-    this.state = {
-      title: '',
-      content: '',
-      userAuth: props.userAuth || storage.get(),
-      error: false
-    }
+const Notes = (props) => {
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    props.getNotes(props.userAuth)
+  })
+
+  const getData = () => {
+    props.getNotes(props.userAuth)
   }
 
-  componentDidMount () {
-    this.getData()
-  }
+  const getNoteCurrent = (id) => {
+    if (!props.notesData) { return }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.userAuth !== this.props.userAuth) {
-      console.log('Logged in?')
-      this.getData()
-    }
-  }
-
-  async getData () {
-    try {
-      let response;
-      console.log('Getting data')
-      if (!this.state.userAuth) { return }
-      console.log('Userauth exists')
-      console.log(this.state.userAuth[1])
-      response = await axios.get(`https://localhost:3000/notesGetUser/${this.state.userAuth[1]}`, {
-        headers: {
-          'authorization': this.state.userAuth[0],
-          'Accept' : 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-      this.props.dispatch({
-        type: COMPILE_NOTES,
-        payload: response.data
-      })
-      console.log(this.props.notesData)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  getNoteCurrent (id) {
-    if (!this.props.notesData) { return }
-
-    const current = this.props.notesData.find((item) => {
+    const current = props.notesData.find((item) => {
       return item._id === id
     })
 
-    console.log(this.props.notesData)
+    console.log(props.notesData)
 
     return (
       <div>
@@ -75,88 +37,72 @@ class Notes extends React.Component {
         <span>
           <h1>{current.title}</h1>
           <p>{current.content}</p>
-          <button onClick={() => this.deleteNote(current._id)}>X</button>
+          <button onClick={() => deleteNote(current._id)}>X</button>
         </span>
       : ''}
       </div>
     )
   }
 
-  handleInputChange = (event, input) => {
+  const handleInputChange = (event, input) => {
     switch (input) {
       case 'title':
-        this.setState({ title: event.target.value })
+        setTitle(event.target.value)
         break
       case 'content':
-        this.setState({ content: event.target.value })
+        setContent(event.target.value)
         break
       default:
         console.log('Nothing')
     }
   }
 
-  async deleteNote(id) {
-    console.log(id)
+  const deleteNote = async (id) => {
     try {
       await axios.delete(`https://localhost:3000/notesDelete/${id}`)
-      this.getData()
+      getData()
     } catch (err) {
       console.error(err)
     }
   }
 
-  async sendPost () {
-    console.log(this.props.userAuth)
-    if (!this.state.userAuth) {
-      this.setState({ error: true })
+  const sendPost = async () => {
+    if (error) {
+      setError(false)
+    }
+
+    if (!props.userAuth || !title || !content) {
+      setError(true)
       return
     }
-    if (this.state.error) {
-      this.setState({ error: false })
-    }
 
-    if (!this.state.title || !this.state.content) { return }
-    try {
-      await axios.post('https://localhost:3000/notesPost', {
-        userString: this.state.userAuth[1],
-        title: this.state.title,
-        content: this.state.content
-      })
-      this.getData()
-    } catch (err) {
-      console.error(err)
-    }
+    props.sendNote()
   }
 
-  render () {
-    return (
-      <div className="notes">
-        <div>
-          <h4>User Auth in State: {this.state.userAuth}</h4>
-          <h2>Input Area</h2>
-          <input
-            placeholder="Title"
-            onChange={(event) => this.handleInputChange(event, 'title')}
-            type="text"
-          />
-          <input
-            placeholder="Content"
-            onChange={(event) => this.handleInputChange(event, 'content')}
-            type="text"
-          />
-          <button onClick={() => this.sendPost()}>
-            Submit
-          </button>
-        </div>
-        {this.state.error && <Error />}
-        <div>
-          <h2>Note:</h2>
-          Auth: {this.state.userAuth}
-          {this.state.userAuth && this.getNoteCurrent(this.props.noteCurrent)}
-        </div>
+  return (
+    <div className="notes">
+      <div>
+        <h2>Input Area</h2>
+        <input
+          placeholder="Title"
+          onChange={(event) => handleInputChange(event, 'title')}
+          type="text"
+        />
+        <input
+          placeholder="Content"
+          onChange={(event) => handleInputChange(event, 'content')}
+          type="text"
+        />
+        <button onClick={() => sendPost()}>
+          Submit
+        </button>
       </div>
-    )
-  }
+      {props.error && <Error />}
+      <div>
+        {props.userAuth && getNoteCurrent(props.noteCurrent)}
+      </div>
+    </div>
+  )
 }
 
 const mapStateToProps = ({ Login, Notes }) => ({
@@ -165,4 +111,9 @@ const mapStateToProps = ({ Login, Notes }) => ({
   noteCurrent: Notes.currentNote
 })
 
-export default connect(mapStateToProps)(Notes)
+const mapDispatchToProps = (dispatch) => ({
+  getNotes: (auth) => dispatch(getNotes(auth)),
+  sendNote: () => dispatch(sendNote)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notes)

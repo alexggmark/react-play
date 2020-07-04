@@ -1,8 +1,8 @@
 {
   "name": "react-play",
   "version": "0.1.0",
-  "engines" : {
-    "node" : ">=0.12"
+  "engines": {
+    "node": ">=0.12"
   },
   "private": true,
   "dependencies": {
@@ -12,7 +12,8 @@
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "HTTPS=true PORT=8080 react-scripts start",
