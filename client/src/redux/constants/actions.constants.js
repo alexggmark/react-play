@@ -1,4 +1,9 @@
-export const API_URL = 'https://localhost:3000'
+let apiUrl = 'https://localhost:3000'
+if (process.env.NODE_ENV === 'production') {
+  apiUrl = ''
+}
+
+export const API_URL = apiUrl
 export const LOGIN_USER = 'loginUser'
 export const LOGOUT_USER = 'logoutUser'
 export const USER_REGISTER = 'userRegister'

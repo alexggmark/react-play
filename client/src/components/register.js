@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import {
+  API_URL,
   USER_REGISTER,
   USER_REGISTER_SUCCESS
 } from '../redux/constants/actions.constants'
@@ -30,7 +31,7 @@ const Register = (props) => {
 
   const registerApi = async () => {
     try {
-      await axios.post('https://localhost:3000/createUser', {
+      await axios.post(`${API_URL}/createUser`, {
         userName: username,
         userPassword: password
       })
