@@ -38,8 +38,7 @@ const Login = (props) => {
       setError(true)
       return
     }
-    props.loginApi(username, password)
-    resetState()
+    props.loginApi(username, password, resetState)
   }
 
   const logout = () => {
@@ -93,7 +92,7 @@ const mapStateToProps = ({ Login }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatch: (callback) => dispatch(callback),
-  loginApi: (username, password) => dispatch(loginAction(username, password)),
+  loginApi: (username, password, callback) => dispatch(loginAction(username, password, callback)),
   loginStorageApi: (auth) => dispatch(loginStorageAction(auth)),
   logoutApi: () => dispatch(logoutAction())
 })

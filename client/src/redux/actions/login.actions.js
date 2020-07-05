@@ -7,7 +7,7 @@ import {
 } from '../constants/actions.constants'
 import { asyncGetNotes, clearNotes } from './notes.actions'
 
-export const loginAction = (username, password) => {
+export const loginAction = (username, password, callback) => {
   console.log('Action: login action')
   return async (dispatch) => {
     try {
@@ -20,6 +20,11 @@ export const loginAction = (username, password) => {
       dispatch(asyncGetNotes([res.data.token, res.data.user._id]))
 
       storage.set(res.data.token, res.data.user._id, res.data.user.userName)
+
+      if (callback) {
+        console.log('Running callback in loginAction')
+        callback()
+      }
     } catch (err) {
       console.error(err)
     }
