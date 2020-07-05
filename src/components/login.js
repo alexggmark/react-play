@@ -54,7 +54,7 @@ const Login = (props) => {
   }
 
   return (
-    <div className="app">
+    <div className="login">
       {!props.userAuth && !props.userRegister ? (
         <>
           <input

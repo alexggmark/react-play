@@ -1,7 +1,9 @@
+@import '../variables';
+
 .sidebar {
   &__container {
     list-style-type: none;
-    max-height: 400px;
+    max-height: 200px;
     overflow: auto;
     padding-left: 0;
   }
@@ -19,6 +21,12 @@
 
     &--1 {
       flex-grow: 1;
+    }
+  }
+
+  @media screen and (min-width: $breakpoint-md) {
+    &__container {
+      max-height: 400px;
     }
   }
 }
