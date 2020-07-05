@@ -36,11 +36,16 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
   })
+
+  https.createServer(app).listen(PORT)
+  return
 }
 
 const options = {
   key: fs.readFileSync(path.resolve(__dirname, './routes/certs/server.key')),
   cert: fs.readFileSync(path.resolve(__dirname, './routes/certs/server.cert'))
 }
+
+https.createServer(options, app).listen(PORT)
 
 https.createServer(options, app).listen(PORT)
