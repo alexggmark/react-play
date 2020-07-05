@@ -37,15 +37,16 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
   })
 
-  https.createServer(app).listen(PORT)
+  // https.createServer(app).listen(PORT)
+  app.listen(PORT, () => console.log('Running in production'))
   return
 }
+
+console.log('Not production')
 
 const options = {
   key: fs.readFileSync(path.resolve(__dirname, './routes/certs/server.key')),
   cert: fs.readFileSync(path.resolve(__dirname, './routes/certs/server.cert'))
 }
-
-https.createServer(options, app).listen(PORT)
 
 https.createServer(options, app).listen(PORT)
