@@ -37,7 +37,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
   })
 
-  // https.createServer(app).listen(PORT)
   app.listen(PORT, () => console.log('Running in production'))
   return
 }
