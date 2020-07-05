@@ -8,6 +8,7 @@ import './sidebar.scss'
 
 const Sidebar = (props) => {
   const editCurrent = (id) => {
+    console.log(`EditCurrent: ${id}`)
     props.dispatch({
       type: EDIT_CURRENT,
       payload: id
@@ -15,6 +16,7 @@ const Sidebar = (props) => {
   }
 
   const deleteNote = (id) => {
+    console.log(`DeleteNote: ${id}`)
     props.deleteNote(id)
   }
 
@@ -36,7 +38,7 @@ const Sidebar = (props) => {
                       {item.title}
                     </span>
                     <button className="sidebar__item--2" onClick={() => editCurrent(item._id)}>Edit</button>
-                    <button className="sidebar__item--3" onClick={() => deleteNote(item._id)}>x</button>
+                    <button className="sidebar__item--3" onClick={() => deleteNote(item._id)}>Delete</button>
                   </li>
                 )
               })}

@@ -69,7 +69,7 @@ const Register = (props) => {
             type="text"
           />
           <button onClick={() => registerApi()}>Register</button>
-          <button onClick={() => toggleRegister(false)}>X</button>
+          <button onClick={() => toggleRegister(false)}>Cancel</button>
         </div>
       )}
     </>

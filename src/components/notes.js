@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { asyncGetNotes, asyncSendNote, asyncDeleteNote } from '../redux/actions/notes.actions'
+import {
+  asyncGetNotes,
+  asyncSendNote,
+  asyncDeleteNote,
+  asyncUpdateNote } from '../redux/actions/notes.actions'
 import './notes.scss'
 
 const Error = () => {
   return (
-    <div>Must be logged in and message mustn't be empty!</div>
+    <div>Message mustn't be empty!</div>
   )
 }
 
@@ -13,6 +17,8 @@ const Notes = (props) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState(false)
+  const [editingState, setEditingState] = useState(false)
+  const [editingContent, setEditingContent] = useState('')
 
   const getNoteCurrent = (id) => {
     if (!props.notesData) { return }
@@ -21,20 +27,40 @@ const Notes = (props) => {
       return item._id === id
     })
 
-    console.log('State: notesdata')
-    console.log(props.notesData)
-
     return (
       <>
         {current ?
           <div className="notes__editing">
             <h1>{current.title}</h1>
-            <p>{current.content}</p>
-            <button onClick={() => props.deleteNote(current._id)}>X</button>
+            {editingState ?
+              <>
+                <input
+                  onChange={(event) => handleInputChange(event, 'editingContent')}
+                  placeholder={current.content}
+                  type="text"
+                />
+                <button onClick={() => toggleEditing()}>Cancel</button>
+                <button onClick={() => saveEdit(current._id)}>Save</button>
+              </> : <>
+              <p>{current.content}</p>
+              <button onClick={() => toggleEditing()}>Edit</button>
+              <button onClick={() => props.deleteNote(current._id)}>Delete</button>
+            </>}
           </div>
         : ''}
       </>
     )
+  }
+
+  const toggleEditing = () => {
+    setEditingState(!editingState)
+  }
+
+  const saveEdit = (id) => {
+    if (!editingContent) { return }
+
+    props.editNote(id, editingContent)
+    toggleEditing(false)
   }
 
   const handleInputChange = (event, input) => {
@@ -44,6 +70,9 @@ const Notes = (props) => {
         break
       case 'content':
         setContent(event.target.value)
+        break
+      case 'editingContent':
+        setEditingContent(event.target.value)
         break
       default:
         console.log('Nothing')
@@ -105,7 +134,8 @@ const mapStateToProps = ({ Login, Notes }) => ({
 const mapDispatchToProps = (dispatch) => ({
   getNotes: (auth) => dispatch(asyncGetNotes(auth)),
   sendNote: (title, content, auth) => dispatch(asyncSendNote(title, content, auth)),
-  deleteNote: (id) => dispatch(asyncDeleteNote(id))
+  deleteNote: (id) => dispatch(asyncDeleteNote(id)),
+  editNote: (id, content) => dispatch(asyncUpdateNote(id, content))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes)

@@ -3,16 +3,15 @@ import {
   API_URL,
   COMPILE_NOTES,
   ADD_NOTE,
+  UPDATE_NOTE,
   DELETE_NOTE,
   CLEAR_NOTES
 } from '../constants/actions.constants'
 
 export const asyncGetNotes = (auth) => {
-  console.log('Action: get notes')
-  console.log(auth)
   return async (dispatch) => {
     try {
-      let response;
+      let response
       response = await axios.get(`${API_URL}/notesGetUser/${auth[1]}`, {
         headers: {
           'authorization': auth[0],
@@ -21,7 +20,6 @@ export const asyncGetNotes = (auth) => {
         }
       })
       dispatch(compileNotes(response.data))
-      console.log('Action: success notes')
     } catch (err) {
       console.error(err)
     }
@@ -29,16 +27,34 @@ export const asyncGetNotes = (auth) => {
 }
 
 export const asyncSendNote = (title, content, auth) => {
-  console.log('Action: send note')
   return async (dispatch) => {
     try {
-      await axios.post(`${API_URL}/notesPost`, {
+      let response
+      response = await axios.post(`${API_URL}/notesPost`, {
         userString: auth,
         title,
         content
       })
-      console.log('Action: successful note post')
-      dispatch(addNote({ title, content }))
+      dispatch(addNote({
+        title,
+        content,
+        _id: response.data._id
+      }))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
+export const asyncUpdateNote = (id, content) => {
+  console.log('Async update')
+  return async (dispatch) => {
+    try {
+      let response
+      response = await axios.put(`${API_URL}/notesUpdate/${id}`, {
+        content
+      })
+      dispatch(updateNote([id, response.data.content]))
     } catch (err) {
       console.error(err)
     }
@@ -57,7 +73,6 @@ export const asyncDeleteNote = (id) => {
 }
 
 const compileNotes = (data) => {
-  console.log('Action: compile notes')
   return {
     type: COMPILE_NOTES,
     payload: data
@@ -75,6 +90,13 @@ const deleteNote = (id) => {
   return {
     type: DELETE_NOTE,
     payload: id
+  }
+}
+
+const updateNote = (data) => {
+  return {
+    type: UPDATE_NOTE,
+    payload: [...data]
   }
 }
 
