@@ -23,14 +23,15 @@ const Notes = (props) => {
   const getNoteCurrent = (id) => {
     if (!props.notesData) { return }
 
-    const current = props.notesData.find((item) => {
+    let current = null
+    current = props.notesData.find((item) => {
       return item._id === id
     })
 
     return (
-      <>
+      <div className={`notes__editing ${current ? 'active' : ''}`}>
         {current ?
-          <div className="notes__editing">
+          <>
             <h1>{current.title}</h1>
             {editingState ?
               <>
@@ -46,9 +47,9 @@ const Notes = (props) => {
               <button onClick={() => toggleEditing()}>Edit</button>
               <button onClick={() => props.deleteNote(current._id)}>Delete</button>
             </>}
-          </div>
+          </>
         : ''}
-      </>
+      </div>
     )
   }
 
@@ -119,7 +120,7 @@ const Notes = (props) => {
       ) : 'Login to edit notes!'}
       {error && <Error />}
       <div>
-        {props.userAuth && getNoteCurrent(props.noteCurrent)}
+        {getNoteCurrent(props.noteCurrent)}
       </div>
     </div>
   )

@@ -41,9 +41,9 @@ const Login = (props) => {
     props.loginApi(username, password, resetState)
   }
 
-  const logout = () => {
-    props.logoutApi()
-  }
+  // const logout = () => {
+  //   props.logoutApi()
+  // }
 
   const toggleRegister = (bool) => {
     props.dispatch({
@@ -74,12 +74,12 @@ const Login = (props) => {
           {props.userRegistrationSuccess ? <p>Registration successful!</p> : null}
         </>
       ) : null}
-      {props.userAuth ? (
+      {/* {props.userAuth ? (
         <>
           <div>User logged in: {props.userAuth[2]}</div>
           <button onClick={() => logout()}>Logout</button>
         </>
-      ) : null}
+      ) : null} */}
     </div>
   )
 }
