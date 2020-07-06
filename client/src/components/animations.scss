@@ -1,0 +1,45 @@
+.my-node-appear, .my-node-enter {
+  opacity: 0;
+  transform: translateY(10px)
+}
+.my-node-appear-active, .my-node-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 350ms, transform 300ms;
+}
+.my-node-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.my-node-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 350ms, transform 300ms;
+}
+
+.item-appear {
+  opacity: 0;
+}
+.item-appear-active {
+  opacity: 1;
+  transition: opacity 350ms;
+}
+
+.item-enter {
+  opacity: 0;
+  transform: scale(0.8);
+}
+.item-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in, transform 150ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.item-exit-active {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 200ms ease-out, transform 80ms ease-out;
+}

@@ -1,33 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { CSSTransition } from 'react-transition-group'
 import Login from './login'
 import Logout from './logout'
 import Register from './register'
 import Notes from './notes'
 import Sidebar from './sidebar'
+import { AnimateEnter } from './animations'
 import './app.scss'
+import './animations.scss'
+
+// const TestTrans = () => {
+//   const [trans, setTrans] = useState(false)
+//   return (
+//     <>
+//     <button onClick={() => setTrans(!trans)}>Click</button>
+//       <CSSTransition
+//         in={trans}
+//         timeout={200}
+//         classNames="my-node"
+//         appear={true}
+//         mountOnEnter
+//         unmountOnExit
+//       >
+//         <span>Bepis</span>
+//       </CSSTransition>
+//     </>
+//   )
+// }
 
 const LandingGate = () => {
   return (
-    <div className="landing-gate">
-      <h1>Login</h1>
-      <Login />
-      <Register />
-    </div>
+    <AnimateEnter>
+      <div className="landing-gate">
+        <h1>Login</h1>
+        <Login />
+        <Register />
+      </div>
+    </AnimateEnter>
   )
 }
 
-const LoggedIn = () => {
+const LoggedIn = (props) => {
   return (
-    <div className="notes-app">
-      <div className="notes-app__sidebar">
-        <Logout />
-        <Sidebar />
+    <AnimateEnter>
+      <div className="notes-app">
+        <div className="notes-app__sidebar">
+          <Logout />
+          <Sidebar />
+        </div>
+        <div className="notes-app__main">
+          <Notes />
+        </div>
       </div>
-      <div className="notes-app__main">
-        <Notes />
-      </div>
-    </div>
+    </AnimateEnter>
   )
 }
 

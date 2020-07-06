@@ -5,6 +5,7 @@ import {
   asyncSendNote,
   asyncDeleteNote,
   asyncUpdateNote } from '../redux/actions/notes.actions'
+import { CSSTransition } from 'react-transition-group'
 import './notes.scss'
 
 const Error = () => {
@@ -29,27 +30,31 @@ const Notes = (props) => {
     })
 
     return (
-      <div className={`notes__editing ${current ? 'active' : ''}`}>
-        {current ?
-          <>
-            <h1>{current.title}</h1>
-            {editingState ?
-              <>
-                <input
-                  onChange={(event) => handleInputChange(event, 'editingContent')}
-                  placeholder={current.content}
-                  type="text"
-                />
-                <button onClick={() => toggleEditing()}>Cancel</button>
-                <button onClick={() => saveEdit(current._id)}>Save</button>
-              </> : <>
-              <p>{current.content}</p>
-              <button onClick={() => toggleEditing()}>Edit</button>
-              <button onClick={() => props.deleteNote(current._id)}>Delete</button>
-            </>}
-          </>
-        : ''}
-      </div>
+      <CSSTransition
+        in={current}
+        timeout={200}
+        classNames="my-node"
+        mountOnEnter
+        unmountOnExit
+      >
+        <div className="notes__editing">
+          <h1>{current ? current.title : 'BYE BYE!'}</h1>
+          {editingState ?
+            <>
+              <input
+                onChange={(event) => handleInputChange(event, 'editingContent')}
+                placeholder={current && current.content}
+                type="text"
+              />
+              <button onClick={() => toggleEditing()}>Cancel</button>
+              <button onClick={() => saveEdit(current._id)}>Save</button>
+            </> : <>
+            <p>{current ? current.content : 'BYE BYE!'}</p>
+            <button onClick={() => toggleEditing()}>Edit</button>
+            <button onClick={() => props.deleteNote(current._id)}>Delete</button>
+          </>}
+        </div>
+      </CSSTransition>
     )
   }
 

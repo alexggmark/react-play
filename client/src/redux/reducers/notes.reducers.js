@@ -44,6 +44,7 @@ export default (state = {}, action) => {
         })
       }
     case DELETE_NOTE:
+      console.log('DELETE_NOTE')
       return {
         ...state,
         notesData: state.notesData.filter(item => item._id !== action.payload)
