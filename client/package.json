@@ -18,7 +18,8 @@
     "axios": "^0.19.2",
     "node-sass": "^4.14.1",
     "redux": "^4.0.5",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "react-transition-group": "^4.4.1"
   },
   "scripts": {
     "start": "HTTPS=true PORT=8080 react-scripts start",
@@ -40,8 +41,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "react-transition-group": "^4.4.1"
   }
 }
