@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginAction, loginStorageAction, logoutAction } from '../redux/actions/login.actions'
 import {
-  USER_REGISTER
+  USER_REGISTER,
+  USER_REGISTER_SUCCESS
 } from '../redux/constants/actions.constants'
 import { AnimateEnter } from './animations'
 
@@ -15,11 +16,11 @@ const Login = (props) => {
     props.loginStorageApi(props.userAuth)
   }, [props])
 
-  const resetState = () => {
-    setError(false)
-    setUsername(null)
-    setPassword(null)
-  }
+  // const resetState = () => {
+  //   setError(false)
+  //   setUsername(null)
+  //   setPassword(null)
+  // }
 
   const handleInputChange = (event, input) => {
     switch (input) {
@@ -39,7 +40,11 @@ const Login = (props) => {
       setError(true)
       return
     }
-    props.loginApi(username, password, resetState)
+    props.loginApi(username, password)
+    props.dispatch({
+      type: USER_REGISTER_SUCCESS,
+      payload: false
+    })
   }
 
   const toggleRegister = (bool) => {

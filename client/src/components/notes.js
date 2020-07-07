@@ -31,7 +31,7 @@ const Notes = (props) => {
 
     return (
       <CSSTransition
-        in={current}
+        in={current ? true : false}
         timeout={200}
         classNames="my-node"
         mountOnEnter
@@ -80,8 +80,7 @@ const Notes = (props) => {
       case 'editingContent':
         setEditingContent(event.target.value)
         break
-      default:
-        console.log('Nothing')
+      default: // Do nothing
     }
   }
 

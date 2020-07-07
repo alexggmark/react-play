@@ -4,13 +4,11 @@ import {
   EDIT_CURRENT
 } from '../redux/constants/actions.constants'
 import { asyncDeleteNote } from '../redux/actions/notes.actions'
-// import { AnimateGroupItems, AnimateItem } from './animations'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import './sidebar.scss'
 
 const Sidebar = (props) => {
   const editCurrent = (id) => {
-    console.log(`EditCurrent: ${id}`)
     props.dispatch({
       type: EDIT_CURRENT,
       payload: id
@@ -18,7 +16,6 @@ const Sidebar = (props) => {
   }
 
   const deleteNote = (id) => {
-    console.log(`DeleteNote: ${id}`)
     props.deleteNote(id)
   }
 

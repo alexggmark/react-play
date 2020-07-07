@@ -47,7 +47,6 @@ export const asyncSendNote = (title, content, auth) => {
 }
 
 export const asyncUpdateNote = (id, content) => {
-  console.log('Async update')
   return async (dispatch) => {
     try {
       let response

@@ -6,8 +6,7 @@ const sendInputToState = (event, input, that) => {
     case 'pass':
       that.setState({ userPassword: event.target.value })
       break
-    default:
-      console.log('Nothing')
+    default: // Do nothing
   }
 }
 

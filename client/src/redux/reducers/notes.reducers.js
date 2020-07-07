@@ -10,7 +10,6 @@ import {
 export default (state = {}, action) => {
   switch (action.type) {
     case ADD_NOTE:
-      console.log(action.payload)
       return {
         ...state,
         notesData: [...state.notesData, action.payload]
@@ -28,15 +27,12 @@ export default (state = {}, action) => {
         currentNote: action.payload
       }
     case UPDATE_NOTE:
-      console.log('UPDATE_NOTE')
       return {
         ...state,
         notesData: state.notesData.map(item => {
           if (item._id !== action.payload[0]) {
             return item
           }
-          console.log('PAYLOAD:')
-          console.log(action.payload[1])
           return {
             ...item,
             content: action.payload[1]
@@ -44,7 +40,6 @@ export default (state = {}, action) => {
         })
       }
     case DELETE_NOTE:
-      console.log('DELETE_NOTE')
       return {
         ...state,
         notesData: state.notesData.filter(item => item._id !== action.payload)

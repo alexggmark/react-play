@@ -4,7 +4,8 @@ import axios from 'axios'
 import {
   API_URL,
   USER_REGISTER,
-  USER_REGISTER_SUCCESS
+  USER_REGISTER_SUCCESS,
+  LOGIN_ERROR
 } from '../redux/constants/actions.constants'
 
 const Register = (props) => {
@@ -42,6 +43,10 @@ const Register = (props) => {
       props.dispatch({
         type: USER_REGISTER_SUCCESS,
         payload: true
+      })
+      props.dispatch({
+        type: LOGIN_ERROR,
+        payload: false
       })
     } catch (err) {
       console.error(err)
