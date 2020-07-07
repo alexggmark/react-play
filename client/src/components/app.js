@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { CSSTransition } from 'react-transition-group'
+import Logo from './logo'
 import Login from './login'
 import Logout from './logout'
 import Register from './register'
@@ -9,25 +9,6 @@ import Sidebar from './sidebar'
 import { AnimateEnter } from './animations'
 import './app.scss'
 import './animations.scss'
-
-// const TestTrans = () => {
-//   const [trans, setTrans] = useState(false)
-//   return (
-//     <>
-//     <button onClick={() => setTrans(!trans)}>Click</button>
-//       <CSSTransition
-//         in={trans}
-//         timeout={200}
-//         classNames="my-node"
-//         appear={true}
-//         mountOnEnter
-//         unmountOnExit
-//       >
-//         <span>Bepis</span>
-//       </CSSTransition>
-//     </>
-//   )
-// }
 
 const LandingGate = () => {
   return (
@@ -60,6 +41,7 @@ const LoggedIn = (props) => {
 const App = (props) => {
   return (
     <>
+      <Logo />
       {props.userAuth ? (
         <LoggedIn />
       ) : (

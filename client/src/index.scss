@@ -7,7 +7,7 @@ body {
 }
 
 button {
-  background-color: #FF6725;
+  background-color: #997eed;
   border: 0;
   border-radius: 50px;
   color: #ffffff;
@@ -15,15 +15,32 @@ button {
   padding: 0.4rem 0.8rem;
   margin: 0.2rem 0.2rem 0.2rem 0;
 
-
   @media screen and (min-width: $breakpoint-md) {
     background-color: #b7becc;
     transition: background-color 0.1s;
 
     &:hover {
-      background-color: #FF6725;
+      background-color: #eb557a;
     }
   }
+}
+
+.error {
+  background-color: #ffeaef;
+  border-radius: 19px;
+  color: #eb557a;
+  font-size: 12px;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.logged-in {
+  background-color: #ffeaef;
+  border-radius: 19px;
+  color: #eb557a;
+  font-size: 12px;
+  margin: 0.5rem 1rem 0.5rem 0;
+  padding: 0.5rem;
 }
 
 input {

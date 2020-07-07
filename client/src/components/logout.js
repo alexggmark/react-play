@@ -11,7 +11,7 @@ const Logout = (props) => {
     <>
       {props.userAuth ? (
         <>
-          <div>User logged in: {props.userAuth[2]}</div>
+          <span className="logged-in">User logged in: {props.userAuth[2]}</span>
           <button onClick={() => logout()}>Logout</button>
         </>
       ) : null}

@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'production') {
 export const API_URL = apiUrl
 export const LOGIN_USER = 'loginUser'
 export const LOGOUT_USER = 'logoutUser'
+export const LOGIN_ERROR = 'loginError'
 export const USER_REGISTER = 'userRegister'
 export const USER_REGISTER_SUCCESS = 'userRegisterSuccess'
 export const CLEAR_NOTES = 'clearNotes'

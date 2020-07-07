@@ -3,9 +3,29 @@
 .landing-gate {
   background-color: #ffffff;
   border-radius: 10px;
-  margin: 0 auto;
+  box-sizing: border-box;
+  margin: 2rem auto 0;
   padding: 1rem;
-  width: 500px;
+  width: 100%;
+
+  @media screen and (min-width: $breakpoint-md) {
+    width: 500px;
+  }
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+  width: 100%;
+
+  &__image {
+    background-color: white;
+    border-radius: 28px;
+    padding: 0.5rem;
+    overflow: visible;
+    width: 100px;
+  }
 }
 
 .notes-app {

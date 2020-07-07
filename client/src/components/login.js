@@ -4,6 +4,7 @@ import { loginAction, loginStorageAction, logoutAction } from '../redux/actions/
 import {
   USER_REGISTER
 } from '../redux/constants/actions.constants'
+import { AnimateEnter } from './animations'
 
 const Login = (props) => {
   const [username, setUsername] = useState(null)
@@ -41,10 +42,6 @@ const Login = (props) => {
     props.loginApi(username, password, resetState)
   }
 
-  // const logout = () => {
-  //   props.logoutApi()
-  // }
-
   const toggleRegister = (bool) => {
     props.dispatch({
       type: USER_REGISTER,
@@ -67,19 +64,20 @@ const Login = (props) => {
             type="text"
           />
           <button onClick={() => loginApi()}>Login</button>
-          {error && (
-            <div className="error">Please enter username/password</div>
-          )}
+          {error && !props.loginError ? (
+            <AnimateEnter>
+              <div className="error">Please enter username/password</div>
+            </AnimateEnter>
+          ) : null}
+          {props.loginError ? (
+            <AnimateEnter>
+              <div className="error">Error logging in, username/password incorrect</div>
+            </AnimateEnter>
+          ) : null}
           <button onClick={() => toggleRegister(true)}>Register new user</button>
           {props.userRegistrationSuccess ? <p>Registration successful!</p> : null}
         </>
       ) : null}
-      {/* {props.userAuth ? (
-        <>
-          <div>User logged in: {props.userAuth[2]}</div>
-          <button onClick={() => logout()}>Logout</button>
-        </>
-      ) : null} */}
     </div>
   )
 }
@@ -87,7 +85,8 @@ const Login = (props) => {
 const mapStateToProps = ({ Login }) => ({
   userAuth: Login.userAuth,
   userRegister: Login.userRegister,
-  userRegistrationSuccess: Login.userRegistrationSuccess
+  userRegistrationSuccess: Login.userRegistrationSuccess,
+  loginError: Login.loginError
 })
 
 const mapDispatchToProps = (dispatch) => ({

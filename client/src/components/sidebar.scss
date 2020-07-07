@@ -21,6 +21,13 @@
 
     &--1 {
       flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--2, &--3 {
+      flex-shrink: 0;
     }
   }
 
