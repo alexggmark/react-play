@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
     const user = await users.findByCredentials(userName, userPassword)
 
     if (!user) {
-      console.error('Not user')
+      res.end()
       return
     }
 
