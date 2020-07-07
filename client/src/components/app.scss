@@ -3,6 +3,7 @@
 .landing-gate {
   background-color: #ffffff;
   border-radius: 10px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.03);
   box-sizing: border-box;
   margin: 2rem auto 0;
   padding: 1rem;
@@ -22,6 +23,7 @@
   &__image {
     background-color: white;
     border-radius: 28px;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.03);
     padding: 0.5rem;
     overflow: visible;
     width: 100px;
