@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
   asyncGetNotes,
@@ -10,7 +10,31 @@ import './notes.scss'
 
 const Error = () => {
   return (
-    <div>Message mustn't be empty!</div>
+    <div className="error">Don't leave input empty!</div>
+  )
+}
+
+const GetNoteCurrent = (props) => {
+  console.log('PROP')
+  console.log(props.noteCurrent)
+  return (
+    <div className="notes__editing">
+      <h1>{props.noteCurrent ? props.noteCurrent.title : null}</h1>
+      {props.editingState ?
+        <>
+          <input
+            onChange={(event) => props.handleInputChange(event, 'editingContent')}
+            placeholder={props.noteCurrent && props.noteCurrent.content}
+            type="text"
+          />
+          <button onClick={() => props.toggleEditing()}>Cancel</button>
+          <button onClick={() => props.saveEdit(props.noteCurrent._id)}>Save</button>
+        </> : <>
+        <p>{props.noteCurrent ? props.noteCurrent.content : null}</p>
+        <button onClick={() => props.toggleEditing()}>Edit</button>
+        <button onClick={() => props.deleteNote(props.noteCurrent._id)}>Delete</button>
+      </>}
+    </div>
   )
 }
 
@@ -20,43 +44,17 @@ const Notes = (props) => {
   const [error, setError] = useState(false)
   const [editingState, setEditingState] = useState(false)
   const [editingContent, setEditingContent] = useState('')
+  const [currentNote, setCurrentNote] = useState(null)
 
-  const getNoteCurrent = (id) => {
-    if (!props.notesData) { return }
+  useEffect(() => {
+    let current = props.notesData ? props.notesData.find((item) => {
+      return item._id === props.noteCurrent
+    }) : null
+    console.log('CURRENT')
+    console.log(current)
+    setCurrentNote(current)
+  }, [props])
 
-    let current = null
-    current = props.notesData.find((item) => {
-      return item._id === id
-    })
-
-    return (
-      <CSSTransition
-        in={current ? true : false}
-        timeout={200}
-        classNames="my-node"
-        mountOnEnter
-        unmountOnExit
-      >
-        <div className="notes__editing">
-          <h1>{current ? current.title : 'BYE BYE!'}</h1>
-          {editingState ?
-            <>
-              <input
-                onChange={(event) => handleInputChange(event, 'editingContent')}
-                placeholder={current && current.content}
-                type="text"
-              />
-              <button onClick={() => toggleEditing()}>Cancel</button>
-              <button onClick={() => saveEdit(current._id)}>Save</button>
-            </> : <>
-            <p>{current ? current.content : 'BYE BYE!'}</p>
-            <button onClick={() => toggleEditing()}>Edit</button>
-            <button onClick={() => props.deleteNote(current._id)}>Delete</button>
-          </>}
-        </div>
-      </CSSTransition>
-    )
-  }
 
   const toggleEditing = () => {
     setEditingState(!editingState)
@@ -124,7 +122,26 @@ const Notes = (props) => {
       ) : 'Login to edit notes!'}
       {error && <Error />}
       <div>
-        {getNoteCurrent(props.noteCurrent)}
+        {currentNote ? (
+          <CSSTransition
+            in={true}
+            timeout={200}
+            classNames="my-node"
+            appear={true}
+            mountOnEnter
+            unmountOnExit
+          >
+            <GetNoteCurrent
+              noteCurrent={currentNote}
+              editingState={editingState}
+              handleInputChange={handleInputChange}
+              toggleEditing={toggleEditing}
+              saveEdit={saveEdit}
+              deleteNote={props.deleteNote}
+            >
+            </GetNoteCurrent>
+          </CSSTransition>
+        ) : null}
       </div>
     </div>
   )

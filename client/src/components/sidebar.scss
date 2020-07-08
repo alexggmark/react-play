@@ -1,10 +1,14 @@
 @import '../variables';
 
 .sidebar {
+  height: 200px;
+
   &__container {
     list-style-type: none;
-    max-height: 200px;
-    overflow: auto;
+    height: 150px;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding-left: 0;
   }
 
@@ -16,6 +20,7 @@
     display: flex;
     justify-content: space-between;
     margin: 5px 0;
+    overflow: hidden;
     padding: 0 0.5rem;
     width: 100%;
 
@@ -32,7 +37,10 @@
   }
 
   @media screen and (min-width: $breakpoint-md) {
+    height: 420px;
+
     &__container {
+      height: 400px;
       max-height: 400px;
     }
   }

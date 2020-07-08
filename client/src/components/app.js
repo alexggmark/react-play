@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Logo from './logo'
 import Login from './login'
@@ -11,9 +11,11 @@ import './app.scss'
 import './animations.scss'
 
 const LandingGate = () => {
+  let ref = createRef()
+
   return (
     <AnimateEnter>
-      <div className="landing-gate">
+      <div className="landing-gate" ref={ref}>
         <h1>Login</h1>
         <Login />
         <Register />

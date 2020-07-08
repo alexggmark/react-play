@@ -24,7 +24,9 @@ const Sidebar = (props) => {
       {props.userAuth ? (
         <>
           <h1>Your notes</h1>
-          <p>{props.notesData && props.notesData.length === 0 && 'No notes yet!'}</p>
+          <p>{props.notesData && props.notesData.length === 0 ? (
+            <div className="error">No notes yet!</div>
+          ) : null}</p>
           {props.notesData ? (
             <ul className="sidebar__container">
               <TransitionGroup>
