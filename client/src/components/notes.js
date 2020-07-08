@@ -15,8 +15,6 @@ const Error = () => {
 }
 
 const GetNoteCurrent = (props) => {
-  console.log('PROP')
-  console.log(props.noteCurrent)
   return (
     <div className="notes__editing">
       <h1>{props.noteCurrent ? props.noteCurrent.title : null}</h1>
@@ -50,8 +48,6 @@ const Notes = (props) => {
     let current = props.notesData ? props.notesData.find((item) => {
       return item._id === props.noteCurrent
     }) : null
-    console.log('CURRENT')
-    console.log(current)
     setCurrentNote(current)
   }, [props])
 
