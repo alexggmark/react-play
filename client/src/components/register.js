@@ -7,10 +7,12 @@ import {
   USER_REGISTER_SUCCESS,
   LOGIN_ERROR
 } from '../redux/constants/actions.constants'
+import { AnimateEnter } from './animations'
 
 const Register = (props) => {
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
+  const [registerEmpty, setRegisterEmpty] = useState(false)
 
   const resetState = () => {
     setUsername(null)
@@ -31,6 +33,13 @@ const Register = (props) => {
   }
 
   const registerApi = async () => {
+    if (!username || !password) {
+      setRegisterEmpty(true)
+      return
+    }
+
+    setRegisterEmpty(false)
+
     try {
       await axios.post(`${API_URL}/createUser`, {
         userName: username,
@@ -74,6 +83,11 @@ const Register = (props) => {
             placeholder="Password"
             type="text"
           />
+          {registerEmpty ? (
+            <AnimateEnter>
+              <div className="error">Don't leave inputs empty!</div>
+            </AnimateEnter>
+          ) : null}
           <button onClick={() => registerApi()}>Register</button>
           <button onClick={() => toggleRegister(false)}>Cancel</button>
         </div>
