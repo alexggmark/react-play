@@ -68,7 +68,6 @@ const Login = (props) => {
             placeholder="Password"
             type="text"
           />
-          <button onClick={() => loginApi()}>Login</button>
           {error && !props.loginError ? (
             <AnimateEnter>
               <div className="error">Please enter username/password</div>
@@ -79,6 +78,7 @@ const Login = (props) => {
               <div className="error">Error logging in, username/password incorrect</div>
             </AnimateEnter>
           ) : null}
+          <button onClick={() => loginApi()}>Login</button>
           <button onClick={() => toggleRegister(true)}>Register new user</button>
           {props.userRegistrationSuccess ? <p>Registration successful!</p> : null}
         </>
