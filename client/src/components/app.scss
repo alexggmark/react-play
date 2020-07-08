@@ -63,6 +63,10 @@
     &__sidebar {
       width: 300px;
     }
+
+    &__main {
+      padding: 2rem 3.5rem;
+    }
   }
 
   @media screen and (min-width: $breakpoint-lg) {

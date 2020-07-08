@@ -1,8 +1,21 @@
+@import '../variables';
+
 .notes {
+  display: flex;
+  flex-flow: column-reverse;
+
   &__editing {
     background-color: #fafcff;
     border-radius: 15px;
-    margin-top: 2rem;
+    margin-top: 0;
     padding: 1rem;
+  }
+
+  @media screen and (min-width: $breakpoint-md) {
+    flex-flow: column;
+
+    &__editing {
+      margin-top: 2rem;
+    }
   }
 }
